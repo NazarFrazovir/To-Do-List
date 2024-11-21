@@ -11,30 +11,39 @@
     <h1>To-Do List</h1>
   </header>
   <main>
-    <!-- Поле для введення нового завдання -->
+    <!-- Секція вводу -->
     <section class="todo-input">
       <input type="text" id="taskInput" placeholder="Add a new task...">
-      <button id="addTaskBtn">Add</button>
+      <select id="categorySelect">
+        <option value="all" selected>General</option>
+      </select>
+      <button id="addTaskBtn">Add Task</button>
+      <button id="addCategoryBtn">Add Category</button>
     </section>
 
-    <!-- Секції завдань -->
+    <!-- Контейнер для секцій завдань -->
     <section id="task-container">
-      <div class="task-section" data-section="all">
-        <h3>All Tasks</h3>
-        <ul id="taskList" class="task-list" data-filter="all"></ul>
-      </div>
-
-      <div class="task-section" data-section="completed">
-        <h3>Completed Tasks</h3>
-        <ul class="task-list" data-filter="completed"></ul>
-      </div>
-
-      <div class="task-section" data-section="active">
-        <h3>Active Tasks</h3>
-        <ul class="task-list" data-filter="active"></ul>
+      <div class="task-section" data-category="all">
+        <div class="section-header">
+          <h3>General Tasks</h3>
+        </div>
+        <ul class="task-list" data-category="all"></ul>
       </div>
     </section>
   </main>
+
+  <!-- Модальне вікно -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Add New Category</h2>
+      <input type="text" id="newCategoryInput" placeholder="Enter category name..." />
+      <div class="modal-actions">
+        <button id="saveCategoryBtn">Save</button>
+        <button id="cancelCategoryBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <p>© 2024 To-Do App(Frazovir Nazar)</p>
   </footer>
