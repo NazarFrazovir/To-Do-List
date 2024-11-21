@@ -123,3 +123,32 @@ body {
     transition: background-color 0.3s ease, border-color 0.3s ease;
   }
   
+  footer {
+    text-align: center;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Градієнт */
+    color: white;
+    font-size: 14px;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1); /* Тінь угорі */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  footer p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  
+  footer p a {
+    color: #ffdd57; /* Яскравий колір для посилання */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Плавна зміна кольору */
+  }
+  
+  footer p a:hover {
+    color: #ffd700; /* Трохи темніше при наведенні */
+  }
+  
