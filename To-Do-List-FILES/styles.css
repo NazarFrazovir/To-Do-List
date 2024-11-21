@@ -44,19 +44,37 @@ body {
     border-radius: 5px;
   }
   
-  button {
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: white;
+  /* Загальний стиль для кнопок */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
     border: none;
     border-radius: 25px;
+    color: white;
     cursor: pointer;
-    font-size: 16px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Градієнт */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Легка тінь */
   }
   
+  /* Ефект наведення */
   button:hover {
-    background-color: #218838;
+    background: linear-gradient(135deg, #5a0db1, #1e63db); /* Трохи темніший градієнт */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Збільшена тінь */
+    transform: translateY(-2px); /* Піднімаємо кнопку */
   }
+  
+  /* Стиль для кнопки "Add Task" */
+  #addTaskBtn {
+    margin-left: 10px; /* Невеликий відступ для вирівнювання */
+  }
+  
+  /* Стиль для кнопки "Add Category" */
+  #addCategoryBtn {
+    margin-left: 10px; /* Невеликий відступ для вирівнювання */
+  }
+  
   
   /* Секції завдань */
   .task-section {
@@ -132,13 +150,13 @@ body {
   }
   
   /* Модальне вікно */
-  .modal {
+.modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6); /* Напівпрозоре затемнення */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -146,30 +164,59 @@ body {
   }
   
   .modal.hidden {
-    display: none;
+    display: none; /* Ховаємо вікно, якщо воно неактивне */
   }
   
   .modal-content {
     background: white;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 20px 30px; /* Відступи по боках і зверху/знизу */
+    border-radius: 15px;
     text-align: center;
-    width: 300px;
+    width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+    animation: showModal 0.3s ease-in-out forwards;
   }
   
+  /* Анімація для відкриття модального вікна */
+  @keyframes showModal {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Заголовок модального вікна */
   .modal-content h2 {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
   }
   
+  /* Поле вводу */
   .modal-content input {
-    width: 100%;
-    padding: 10px;
+    width: 50%; 
+    padding: 12px 15px; /* Відступи всередині поля */
     font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 20px;
+    border: 2px solid #6a11cb; /* Стиль рамки */
+    border-radius: 8px;
+    margin: 15px 0; /* Відступ зверху і знизу для вирівнювання */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: border-color 0.3s ease;
   }
   
+  .modal-content input:focus {
+    border-color: #2575fc; /* Колір рамки під час фокусу */
+    box-shadow: 0 4px 8px rgba(37, 117, 252, 0.2);
+  }
+  
+  /* Дії модального вікна */
   .modal-actions {
     display: flex;
     justify-content: space-between;
@@ -177,7 +224,32 @@ body {
   }
   
   .modal-actions button {
-    flex: 1;
+    flex: 1; /* Кнопки однакової ширини */
+    padding: 12px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  #saveCategoryBtn {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+  }
+  
+  #saveCategoryBtn:hover {
+    background: linear-gradient(135deg, #5a0db1, #1e63db);
+  }
+  
+  #cancelCategoryBtn {
+    background: linear-gradient(135deg, #ff5f6d, #ffc371); /* Червоний градієнт */
+    color: white;
+  }
+  
+  #cancelCategoryBtn:hover {
+    background: linear-gradient(135deg, #e8474c, #ff9a56);
   }
   
   /* Footer */
