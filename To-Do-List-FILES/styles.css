@@ -1,79 +1,112 @@
+/* Загальний стиль сторінки */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .todo-app {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    width: 300px;
-  }
-  
-  h1 {
-    text-align: center;
+    background-color: #f4f4f9;
     color: #333;
   }
   
-  .todo-input {
+  header {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  .task-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  /* Стиль для контейнера вводу */
+.todo-input {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
     margin-bottom: 20px;
   }
   
+  /* Поле вводу */
   #taskInput {
     flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 25px; /* Закруглені краї */
     font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легка тінь */
+    outline: none;
+    transition: all 0.3s ease; /* Плавний перехід для фокуса */
   }
   
-  #addTaskBtn {
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  /* Ефект при фокусі на полі вводу */
+  #taskInput:focus {
+    border-color: #28a745; /* Зелений колір обводки при фокусі */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Тінь збільшується */
   }
   
-  #addTaskBtn:hover {
-    background-color: #218838;
-  }
-  
-  #taskList {
+  .task-list {
     list-style: none;
     padding: 0;
+    min-height: 50px;
+    border: 2px dashed #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #f9f9f9;
   }
   
-  #taskList li {
+  .task-list.drag-over {
+    border-color: #2575fc;
+    background-color: #e3f2fd;
+  }
+  
+  .task-list li {
+    margin-bottom: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    font-size: 16px;
   }
   
-  #taskList li.completed {
-    text-decoration: line-through;
-    color: #888;
+  #addTaskBtn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px; /* Закруглені краї */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Тінь */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Плавний перехід для всіх змін */
   }
+  
+  #addTaskBtn:hover {
+    background: linear-gradient(135deg, #6510c0, #2167e0);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3); /* Збільшена тінь */
+    transform: translateY(-2px); /* Легке підняття кнопки */
+  }
+  
+  #addTaskBtn:active {
+    transform: translateY(1px); /* Натискання кнопки */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  }
+  
   
   .delete-btn {
     background: #dc3545;
-    color: #fff;
+    color: white;
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
@@ -82,5 +115,11 @@ body {
   
   .delete-btn:hover {
     background: #c82333;
+  }
+
+  .task-list.drag-over {
+    border-color: #2575fc; 
+    background-color: #e3f2fd; 
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
   
