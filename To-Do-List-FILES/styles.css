@@ -24,53 +24,55 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
     margin-bottom: 20px;
   }
   
-  #taskInput {
+  .todo-input input,
+  .todo-input select,
+  .todo-input button {
+    font-size: 16px;
+    border-radius: 8px;
+  }
+  
+  .todo-input input {
     flex: 1;
     padding: 12px 15px;
     border: 2px solid #ddd;
-    border-radius: 25px;
-    font-size: 16px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  #prioritySelect, #categorySelect {
-    padding: 10px;
-    font-size: 16px;
+  .todo-input input:focus {
+    border-color: #6a11cb;
+    outline: none;
+    box-shadow: 0 4px 6px rgba(106, 17, 203, 0.3);
+  }
+  
+  .todo-input select {
+    padding: 10px 12px;
     border: 2px solid #ddd;
-    border-radius: 5px;
+    background-color: #fff;
     cursor: pointer;
   }
   
-  /* Загальний стиль для кнопок */
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
+  .todo-input button {
+    padding: 10px 15px;
     font-weight: bold;
-    border: none;
-    border-radius: 25px;
     color: white;
+    border: none;
     cursor: pointer;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Градієнт */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Легка тінь */
   }
   
-  /* Ефект наведення */
-  button:hover {
-    background: linear-gradient(135deg, #5a0db1, #1e63db); /* Трохи темніший градієнт */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Збільшена тінь */
-    transform: translateY(-2px); /* Піднімаємо кнопку */
+  .todo-input button:hover {
+    background: linear-gradient(135deg, #5a0db1, #1e63db);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
   }
   
-  #addTaskBtn, #addCategoryBtn {
-    margin-left: 10px;
-  }
-  
-  /* Секції завдань */
+  /* Секція завдань */
   .task-section {
     margin-top: 20px;
     padding: 20px;
@@ -80,43 +82,55 @@ body {
     position: relative;
   }
   
-  .task-section .section-header {
+  /* Заголовок і кнопка у секції */
+  .section-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Вирівнювання заголовка ліворуч і кнопки праворуч */
     align-items: center;
+    margin-bottom: 10px;
   }
   
-  .task-section h3 {
+  .section-header h3 {
     margin: 0;
+    font-size: 18px;
+    font-weight: bold;
   }
   
-  .task-section .delete-section-btn {
-    background-color: #dc3545;
-    color: white;
+  /* Кнопка видалення категорії */
+  .delete-category-btn {
+    padding: 6px 12px;
+    font-size: 14px;
     border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
+    border-radius: 25px;
     cursor: pointer;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
-  .task-section .delete-section-btn:hover {
-    background-color: #c82333;
+  .delete-category-btn:hover {
+    background: linear-gradient(135deg, #5a0db1, #1e63db);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-1px);
   }
   
+  /* Список завдань */
   .task-list {
     list-style: none;
-    padding: 0;
-    border: 2px dashed #ddd;
-    border-radius: 5px;
     padding: 10px;
-    min-height: 50px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
     background-color: #f9f9f9;
+    min-height: 50px;
+    width: 100%; /* Розтягнення на всю ширину секції */
+    box-sizing: border-box; /* Враховує внутрішні відступи у ширині */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
   
   .task-list.drag-over {
-    border-color: #2575fc;
     background-color: #e3f2fd;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    border-color: #2575fc;
   }
   
   .task-list li {
@@ -128,6 +142,10 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  
+  .task-list li:last-child {
+    margin-bottom: 0;
   }
   
   .task-list li .delete-btn {
@@ -143,20 +161,22 @@ body {
     background-color: #c82333;
   }
   
-  /* Стилі для пріоритетів */
+  /* Пріоритети завдань */
   .task.high {
-    background-color: #f8d7da; /* Світло-червоний для високого пріоритету */
-    border-left: 5px solid #dc3545;
+    border-left: 5px solid #ff5f6d;
   }
   
   .task.medium {
-    background-color: #fff3cd; /* Жовтий для середнього пріоритету */
-    border-left: 5px solid #ffc107;
+    border-left: 5px solid #ffc371;
   }
   
   .task.low {
-    background-color: #d4edda; /* Світло-зелений для низького пріоритету */
     border-left: 5px solid #28a745;
+  }
+  
+  .task.overdue {
+    background-color: #ffeff0;
+    border-color: #ff5f6d;
   }
   
   /* Модальне вікно */
@@ -166,7 +186,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Напівпрозоре затемнення */
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -174,12 +194,21 @@ body {
   }
   
   .modal.hidden {
-    display: none; /* Ховаємо вікно, якщо воно неактивне */
+    display: none;
   }
+
+  #modalTaskInput,
+  #modalDeadlineDate,
+  #modalDeadlineTime,
+  #newCategoryInput
+  {
+    width: 80%;
+  }
+
   
   .modal-content {
     background: white;
-    padding: 20px 30px; /* Відступи по боках і зверху/знизу */
+    padding: 20px 30px;
     border-radius: 15px;
     text-align: center;
     width: 400px;
@@ -188,7 +217,6 @@ body {
     animation: showModal 0.3s ease-in-out forwards;
   }
   
-  /* Анімація для відкриття модального вікна */
   @keyframes showModal {
     from {
       opacity: 0;
@@ -207,21 +235,14 @@ body {
     color: #333;
   }
   
-  .modal-content input {
-    width: 50%;
-    padding: 12px 15px; /* Відступи всередині поля */
+  .modal-content input,
+  .modal-content select {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
     font-size: 16px;
-    border: 2px solid #6a11cb; /* Стиль рамки */
-    border-radius: 8px;
-    margin: 15px 0; /* Відступ зверху і знизу для вирівнювання */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-  
-  .modal-content input:focus {
-    border-color: #2575fc; /* Колір рамки під час фокусу */
-    box-shadow: 0 4px 8px rgba(37, 117, 252, 0.2);
   }
   
   .modal-actions {
@@ -241,20 +262,24 @@ body {
     transition: all 0.3s ease;
   }
   
+  #saveTaskBtn,
   #saveCategoryBtn {
     background: linear-gradient(135deg, #6a11cb, #2575fc);
     color: white;
   }
   
+  #saveTaskBtn:hover,
   #saveCategoryBtn:hover {
     background: linear-gradient(135deg, #5a0db1, #1e63db);
   }
   
+  #cancelTaskBtn,
   #cancelCategoryBtn {
-    background: linear-gradient(135deg, #ff5f6d, #ffc371); /* Червоний градієнт */
+    background: linear-gradient(135deg, #ff5f6d, #ffc371);
     color: white;
   }
   
+  #cancelTaskBtn:hover,
   #cancelCategoryBtn:hover {
     background: linear-gradient(135deg, #e8474c, #ff9a56);
   }
@@ -268,49 +293,36 @@ body {
     font-size: 14px;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
   }
-
-
-  /* Загальний стиль для select */
-select {
-    padding: 10px 15px; /* Відступи */
-    border: 2px solid #ddd; /* Сіра рамка */
-    border-radius: 25px; /* Закруглені кути */
-    font-size: 16px; /* Розмір тексту */
-    color: #333; /* Колір тексту */
-    background: linear-gradient(to right, #f9f9f9, #ffffff);
-    outline: none; /* Видаляємо стандартну обводку */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легка тінь */
-    transition: all 0.3s ease; /* Плавний перехід */
-    appearance: none; /* Прибираємо стандартний вигляд стрілки */
-    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
-    cursor: pointer;
+  
+  /* Загальний стиль для дедлайну */
+.deadline {
+    font-weight: bold;
+    margin-left: 10px;
+    padding: 3px 6px;
+    border-radius: 4px;
   }
   
-  /* Hover ефект */
-  select:hover {
-    border-color: #2575fc; /* Синя рамка */
+  /* Червоний для прострочених завдань */
+  .deadline.overdue {
+    background-color: #ff5f5f; /* Яскраво-червоний */
+    color: white;
   }
   
-  /* Focus ефект */
-  select:focus {
-    border-color: #6a11cb; /* Фіолетова рамка */
-    box-shadow: 0 4px 8px rgba(106, 17, 203, 0.3); /* Тінь */
+  /* Помаранчевий для завдань, дедлайн яких настає скоро */
+  .deadline.upcoming {
+    background-color: #ffb347; /* Помаранчевий */
+    color: white;
   }
   
-  /* Стиль для випадаючого списку, коли обраний елемент */
-  select option {
-    font-size: 16px; /* Розмір тексту */
-    color: #333; /* Колір тексту */
-    background: #f0f0ff; /* Легке підсвічування активного елемента */
-
+  /* Зелений для завдань із далекою датою дедлайну */
+  .deadline.safe {
+    background-color: #77dd77; /* Світло-зелений */
+    color: white;
   }
 
-  /* Стиль для першого елемента в select */
-select option:first-child {
-    color: #aaa; /* Світлий сірий текст */
+  
+  /* Стиль для завдань без дедлайну */
+.deadline.no-deadline {
+    color: #999;
+    font-style: italic;
   }
-  
-  

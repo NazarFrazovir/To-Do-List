@@ -1,138 +1,137 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const taskInput = document.getElementById('taskInput'); // Поле вводу завдання
-    const addTaskBtn = document.getElementById('addTaskBtn'); // Кнопка "Add Task"
-    const addCategoryBtn = document.getElementById('addCategoryBtn'); // Кнопка "Add Category"
-    const prioritySelect = document.getElementById('prioritySelect'); // Вибір пріоритету
-    const categorySelect = document.getElementById('categorySelect'); // Вибір категорії
-    const taskContainer = document.getElementById('task-container'); // Контейнер секцій завдань
-    const modal = document.getElementById('modal'); // Модальне вікно
-    const newCategoryInput = document.getElementById('newCategoryInput'); // Поле вводу для нової категорії
-    const saveCategoryBtn = document.getElementById('saveCategoryBtn'); // Кнопка "Save" у модальному вікні
-    const cancelCategoryBtn = document.getElementById('cancelCategoryBtn'); // Кнопка "Cancel" у модальному вікні
-    let currentTask = null; // Завдання, яке перетягується
+    // Елементи DOM
+    const openTaskModalBtn = document.getElementById('openTaskModalBtn');
+    const openCategoryModalBtn = document.getElementById('openCategoryModalBtn');
+    const taskModal = document.getElementById('taskModal');
+    const categoryModal = document.getElementById('categoryModal');
+    const modalTaskInput = document.getElementById('modalTaskInput');
+    const modalPrioritySelect = document.getElementById('modalPrioritySelect');
+    const modalCategorySelect = document.getElementById('modalCategorySelect');
+    const modalDeadlineDate = document.getElementById('modalDeadlineDate');
+    const modalDeadlineTime = document.getElementById('modalDeadlineTime');
+    const saveTaskBtn = document.getElementById('saveTaskBtn');
+    const cancelTaskBtn = document.getElementById('cancelTaskBtn');
+    const newCategoryInput = document.getElementById('newCategoryInput');
+    const saveCategoryBtn = document.getElementById('saveCategoryBtn');
+    const cancelCategoryBtn = document.getElementById('cancelCategoryBtn');
+    const taskContainer = document.getElementById('task-container');
+    let currentTask = null;
   
-    // Завантажуємо дані з LocalStorage при старті
+    // Завантаження даних із LocalStorage
     loadFromLocalStorage();
   
-    // Додавання нового завдання
-    addTaskBtn.addEventListener('click', () => {
-      const taskText = taskInput.value.trim(); // Текст завдання
-      const selectedPriority = prioritySelect.value; // Пріоритет завдання
-      const selectedCategory = categorySelect.value; // Категорія завдання
+    // Відкрити модальне вікно для створення завдання
+    openTaskModalBtn.addEventListener('click', () => {
+      taskModal.classList.remove('hidden');
+      modalTaskInput.value = '';
+      modalPrioritySelect.value = 'medium'; // За замовчуванням "medium"
+      modalCategorySelect.value = 'all'; // За замовчуванням "General"
+      modalDeadlineDate.value = '';
+      modalDeadlineTime.value = '';
+      modalTaskInput.focus();
+    });
+  
+    // Закрити модальне вікно для створення завдання
+    cancelTaskBtn.addEventListener('click', () => {
+      taskModal.classList.add('hidden');
+    });
+  
+    // Зберегти завдання
+    saveTaskBtn.addEventListener('click', () => {
+      const taskText = modalTaskInput.value.trim();
+      const selectedPriority = modalPrioritySelect.value || 'medium';
+      const selectedCategory = modalCategorySelect.value;
+      const deadline =
+        modalDeadlineDate.value && modalDeadlineTime.value
+          ? `${modalDeadlineDate.value} ${modalDeadlineTime.value}`
+          : null;
   
       if (!taskText) {
-        alert('Please enter a task!');
+        alert('Task text is required!');
         return;
       }
   
-      // Створення завдання
-      const taskItem = createTaskItem(taskText, selectedCategory, selectedPriority);
+      const taskItem = createTaskItem(taskText, selectedCategory, selectedPriority, deadline);
       const categoryList = document.querySelector(`[data-category="${selectedCategory}"] .task-list`);
-      categoryList.appendChild(taskItem); // Додаємо завдання до списку
+      categoryList.appendChild(taskItem);
   
-      // Сортуємо завдання за пріоритетом
-      sortTasks(categoryList);
-  
-      taskInput.value = ''; // Очищаємо поле вводу
+      sortTasks(categoryList); // Сортуємо завдання в категорії
+      taskModal.classList.add('hidden'); // Закриваємо модальне вікно
       saveToLocalStorage(); // Оновлюємо LocalStorage
     });
   
-    // Відкрити модальне вікно для додавання нової категорії
-    addCategoryBtn.addEventListener('click', () => {
-      modal.classList.remove('hidden'); // Показуємо модальне вікно
-      newCategoryInput.value = ''; // Очищаємо поле вводу
-      newCategoryInput.focus(); // Ставимо фокус на поле
+    // Відкрити модальне вікно для створення категорії
+    openCategoryModalBtn.addEventListener('click', () => {
+      categoryModal.classList.remove('hidden');
+      newCategoryInput.value = '';
+      newCategoryInput.focus();
+    });
+  
+    // Закрити модальне вікно для створення категорії
+    cancelCategoryBtn.addEventListener('click', () => {
+      categoryModal.classList.add('hidden');
     });
   
     // Зберегти нову категорію
     saveCategoryBtn.addEventListener('click', () => {
-      const newCategory = newCategoryInput.value.trim();
-      if (!newCategory) {
+      const categoryName = newCategoryInput.value.trim();
+      if (!categoryName) {
         alert('Please enter a category name!');
         return;
       }
   
-      addNewCategory(newCategory); // Додаємо нову категорію
-      modal.classList.add('hidden'); // Ховаємо модальне вікно
+      addNewCategory(categoryName);
+      categoryModal.classList.add('hidden');
     });
   
-    // Скасувати додавання нової категорії
-    cancelCategoryBtn.addEventListener('click', () => {
-      modal.classList.add('hidden'); // Ховаємо модальне вікно
-    });
-  
-    // Додавання нової категорії
-    function addNewCategory(categoryName) {
-      // Перевіряємо, чи така категорія вже існує
-      if (document.querySelector(`[data-category="${categoryName}"]`)) {
-        return;
-      }
-  
-      // Додаємо нову категорію у випадаючий список
-      const newOption = document.createElement('option');
-      newOption.value = categoryName;
-      newOption.textContent = categoryName;
-      categorySelect.appendChild(newOption);
-  
-      // Створюємо нову секцію для завдань
-      const newSection = document.createElement('div');
-      newSection.className = 'task-section';
-      newSection.dataset.category = categoryName;
-      newSection.innerHTML = `
-        <div class="section-header">
-          <h3>${categoryName}</h3>
-          <button class="delete-section-btn" data-category="${categoryName}">Delete Section</button>
-        </div>
-        <ul class="task-list" data-category="${categoryName}"></ul>
-      `;
-      taskContainer.appendChild(newSection);
-  
-      // Додаємо подію для кнопки видалення категорії
-      const deleteBtn = newSection.querySelector('.delete-section-btn');
-      deleteBtn.addEventListener('click', () => handleDeleteSection(categoryName, newSection));
-  
-      saveToLocalStorage(); // Зберігаємо зміни
-    }
-  
-    // Видалення категорії
-    function handleDeleteSection(categoryName, sectionElement) {
-      sectionElement.remove(); // Видаляємо секцію з DOM
-      removeCategoryFromLocalStorage(categoryName); // Видаляємо з LocalStorage
-    }
-  
-    // Видалення категорії з LocalStorage
-    function removeCategoryFromLocalStorage(categoryName) {
-      const savedData = JSON.parse(localStorage.getItem('todoData')) || { categories: [], tasks: [] };
-  
-      // Видаляємо категорію та її завдання
-      savedData.categories = savedData.categories.filter(category => category !== categoryName);
-      savedData.tasks = savedData.tasks.filter(task => task.category !== categoryName);
-  
-      localStorage.setItem('todoData', JSON.stringify(savedData)); // Оновлюємо LocalStorage
-    }
-  
-    function createTaskItem(text, category, priority) {
+    // Створення завдання
+    function createTaskItem(text, category, priority, deadline) {
         const taskItem = document.createElement('li');
-        taskItem.textContent = text;
-        taskItem.className = `task ${priority}`; // Додаємо клас для пріоритету
+        taskItem.className = `task ${priority}`;
         taskItem.dataset.category = category;
         taskItem.dataset.priority = priority;
-
-        // Додаємо draggable атрибут
-  taskItem.setAttribute('draggable', 'true');
+        taskItem.dataset.deadline = deadline;
       
-        // Кнопка видалення завдання
+        const taskText = document.createElement('span');
+        taskText.textContent = text;
+        taskItem.appendChild(taskText);
+      
+        // Обробка дедлайну
+        const deadlineSpan = document.createElement('span');
+        deadlineSpan.className = 'deadline';
+        if (deadline) {
+          deadlineSpan.textContent = ` (Deadline: ${deadline})`;
+      
+          // Стиль дедлайну
+          const now = new Date();
+          const deadlineDate = new Date(deadline);
+          const timeDiff = deadlineDate - now;
+      
+          if (timeDiff < 0) {
+            deadlineSpan.classList.add('overdue'); // Прострочений дедлайн
+          } else if (timeDiff <= 24 * 60 * 60 * 1000) {
+            deadlineSpan.classList.add('upcoming'); // Менше ніж 24 години
+          } else {
+            deadlineSpan.classList.add('safe'); // Далека дата
+          }
+        } else {
+          deadlineSpan.textContent = ' (No deadline has been set)'; // Якщо дедлайн не встановлено
+          deadlineSpan.classList.add('no-deadline');
+        }
+        taskItem.appendChild(deadlineSpan);
+      
+        // Кнопка видалення
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Delete';
         deleteBtn.className = 'delete-btn';
         deleteBtn.addEventListener('click', () => {
-          taskItem.remove(); // Видаляємо завдання з DOM
-          saveToLocalStorage(); // Оновлюємо LocalStorage
+          taskItem.remove();
+          saveToLocalStorage();
         });
       
         taskItem.appendChild(deleteBtn);
       
-        // Додаємо події для перетягування
+        taskItem.setAttribute('draggable', 'true');
         taskItem.addEventListener('dragstart', handleDragStart);
         taskItem.addEventListener('dragend', handleDragEnd);
       
@@ -140,6 +139,111 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       
+      
+  
+    // Видалення категорії
+    function deleteCategory(categoryName, sectionElement) {
+      sectionElement.remove(); // Видаляємо секцію з DOM
+  
+      const savedData = JSON.parse(localStorage.getItem('todoData')) || { categories: [], tasks: [] };
+  
+      savedData.categories = savedData.categories.filter((cat) => cat !== categoryName);
+      savedData.tasks = savedData.tasks.filter((task) => task.category !== categoryName);
+  
+      localStorage.setItem('todoData', JSON.stringify(savedData));
+    }
+  
+    // Додавання категорії
+    function addNewCategory(categoryName) {
+      if (document.querySelector(`[data-category="${categoryName}"]`)) return;
+  
+      const newOption = document.createElement('option');
+      newOption.value = categoryName;
+      newOption.textContent = categoryName;
+      modalCategorySelect.appendChild(newOption);
+  
+      const newSection = document.createElement('div');
+      newSection.className = 'task-section';
+      newSection.dataset.category = categoryName;
+      newSection.innerHTML = `
+        <div class="section-header">
+          <h3>${categoryName}</h3>
+          <button class="delete-category-btn">Delete Category</button>
+        </div>
+        <ul class="task-list" data-category="${categoryName}"></ul>
+      `;
+  
+      const deleteCategoryBtn = newSection.querySelector('.delete-category-btn');
+      deleteCategoryBtn.addEventListener('click', () => {
+        deleteCategory(categoryName, newSection);
+      });
+  
+      taskContainer.appendChild(newSection);
+      saveToLocalStorage();
+    }
+  
+    // Завантаження даних із LocalStorage
+    function loadFromLocalStorage() {
+      const savedData = JSON.parse(localStorage.getItem('todoData')) || { categories: [], tasks: [] };
+  
+      // Очищаємо попередні категорії (крім базової "General")
+      modalCategorySelect.innerHTML = '<option value="all" selected>General</option>';
+      const existingSections = document.querySelectorAll('.task-section');
+      existingSections.forEach((section) => {
+        if (section.dataset.category !== 'all') {
+          section.remove();
+        }
+      });
+  
+      // Відновлюємо категорії з LocalStorage
+      savedData.categories.forEach((category) => {
+        if (category !== 'all') {
+          addNewCategory(category);
+        }
+      });
+  
+      // Відновлюємо завдання
+      savedData.tasks.forEach((task) => {
+        const categoryList = document.querySelector(`[data-category="${task.category}"] .task-list`);
+        if (categoryList) {
+          const taskItem = createTaskItem(task.text, 
+            task.category, 
+            task.priority || '', // Пріоритет може бути порожнім
+        task.deadline || null // Якщо дедлайн порожній, передаємо `null`
+        );
+          categoryList.appendChild(taskItem);
+          sortTasks(categoryList);
+        }
+      });
+    }
+  
+    // Збереження даних у LocalStorage
+    function saveToLocalStorage() {
+      const data = { categories: [], tasks: [] };
+  
+      const options = modalCategorySelect.querySelectorAll('option');
+      options.forEach((option) => {
+        if (option.value !== 'all') {
+          data.categories.push(option.value);
+        }
+      });
+  
+      const taskLists = document.querySelectorAll('.task-list');
+      taskLists.forEach((list) => {
+        const category = list.dataset.category;
+        const tasks = list.querySelectorAll('.task');
+        tasks.forEach((task) => {
+          data.tasks.push({
+            text: task.querySelector('span').textContent,
+            category,
+            priority: task.dataset.priority || '', // Якщо пріоритет не задано, зберігаємо як порожній рядок
+        deadline: task.dataset.deadline || '' // Якщо дедлайн не задано, зберігаємо як порожній рядок
+          });
+        });
+      });
+  
+      localStorage.setItem('todoData', JSON.stringify(data));
+    }
   
     // Події для перетягування
     taskContainer.addEventListener('dragover', (e) => e.preventDefault());
@@ -162,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (targetList && currentTask) {
         targetList.appendChild(currentTask);
         currentTask.dataset.category = targetList.dataset.category;
-        saveToLocalStorage(); // Оновлюємо LocalStorage
+        saveToLocalStorage();
       }
     }
   
@@ -170,83 +274,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function sortTasks(categoryList) {
       const tasks = Array.from(categoryList.children);
   
-      // Визначаємо порядок пріоритетів
       const priorityOrder = { high: 1, medium: 2, low: 3 };
   
       tasks.sort((a, b) => {
         return priorityOrder[a.dataset.priority] - priorityOrder[b.dataset.priority];
       });
   
-      tasks.forEach(task => categoryList.appendChild(task));
+      tasks.forEach((task) => categoryList.appendChild(task));
     }
-  
-    // Завантаження з LocalStorage
-    function loadFromLocalStorage() {
-        const savedData = JSON.parse(localStorage.getItem('todoData')) || { categories: [], tasks: [] };
-      
-        console.log('Loading from LocalStorage:', savedData);
-      
-        // Очищаємо існуючі категорії та секції, крім "General"
-        categorySelect.innerHTML = '<option value="all" selected>General</option>';
-        const existingSections = document.querySelectorAll('.task-section');
-        existingSections.forEach(section => {
-          if (section.dataset.category !== 'all') {
-            section.remove();
-          }
-        });
-      
-        // Відновлюємо категорії
-        savedData.categories.forEach(category => {
-          addNewCategory(category);
-        });
-      
-        // Відновлюємо завдання
-        savedData.tasks.forEach(task => {
-          const categoryList = document.querySelector(`[data-category="${task.category}"] .task-list`);
-          if (categoryList) {
-            const taskItem = createTaskItem(task.text, task.category, task.priority);
-            categoryList.appendChild(taskItem);
-          } else {
-            console.error(`Category not found for task:`, task);
-          }
-        });
-      
-        // Сортуємо завдання у кожній категорії
-        const taskLists = document.querySelectorAll('.task-list');
-        taskLists.forEach(sortTasks);
-      }
-      
-
-      
-  
-    // Збереження до LocalStorage
-    function saveToLocalStorage() {
-        const data = { categories: [], tasks: [] };
-      
-        // Зберігаємо всі категорії, крім "General"
-        const options = categorySelect.querySelectorAll('option');
-        options.forEach(option => {
-          if (option.value !== 'all') {
-            data.categories.push(option.value);
-          }
-        });
-      
-        // Зберігаємо всі завдання
-        const taskLists = document.querySelectorAll('.task-list');
-        taskLists.forEach(list => {
-          const category = list.dataset.category;
-          const tasks = list.querySelectorAll('.task');
-          tasks.forEach(task => {
-            data.tasks.push({
-              text: task.textContent.replace('Delete', '').trim(),
-              category,
-              priority: task.dataset.priority,
-            });
-          });
-        });
-      
-        console.log('Saving to LocalStorage:', data);
-        localStorage.setItem('todoData', JSON.stringify(data));
-      }
-    });           
+  });
   

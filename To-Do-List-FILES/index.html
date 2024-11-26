@@ -11,29 +11,13 @@
     <h1>To-Do List</h1>
   </header>
   <main>
-    <!-- Секція вводу -->
+    <!-- Секція для кнопок -->
     <section class="todo-input">
-      <!-- Поле для вводу завдання -->
-      <input type="text" id="taskInput" placeholder="Add a new task...">
-      
-      <!-- Вибір пріоритету -->
-  <select id="prioritySelect">
-    <option value="" disabled selected>Priority</option>
-    <option value="high">High</option>
-    <option value="medium">Medium</option>
-    <option value="low">Low</option>
-  </select>
-      
-      <!-- Вибір категорії -->
-      <!-- Вибір категорії -->
-  <select id="categorySelect">
-    <option value="" disabled selected>Category</option>
-    <option value="all">General</option>
-  </select>
+      <!-- Кнопка для створення завдання -->
+      <button id="openTaskModalBtn">Add Task</button>
 
-      <!-- Кнопки -->
-      <button id="addTaskBtn">Add Task</button>
-      <button id="addCategoryBtn">Add Category</button>
+      <!-- Кнопка для створення категорії -->
+      <button id="openCategoryModalBtn">Add Category</button>
     </section>
 
     <!-- Контейнер для секцій завдань -->
@@ -48,13 +32,47 @@
     </section>
   </main>
 
-  <!-- Модальне вікно -->
-  <div id="modal" class="modal hidden">
+  <!-- Модальне вікно для додавання завдання -->
+  <div id="taskModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Add New Task</h2>
+
+      <!-- Поле для вводу назви завдання -->
+      <input type="text" id="modalTaskInput" placeholder="Task name...">
+
+      <!-- Вибір пріоритету -->
+      <select id="modalPrioritySelect">
+        <option value="" disabled selected>Priority</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+
+      <!-- Вибір категорії -->
+      <select id="modalCategorySelect">
+        <option value="" disabled selected>Category</option>
+        <option value="all">General</option>
+      </select>
+
+      <!-- Вибір дедлайну -->
+      <input type="date" id="modalDeadlineDate">
+      <input type="time" id="modalDeadlineTime">
+
+      <!-- Кнопки -->
+      <div class="modal-actions">
+        <button id="saveTaskBtn">Save Task</button>
+        <button id="cancelTaskBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальне вікно для додавання категорії -->
+  <div id="categoryModal" class="modal hidden">
     <div class="modal-content">
       <h2>Add New Category</h2>
       <input type="text" id="newCategoryInput" placeholder="Enter category name..." />
       <div class="modal-actions">
-        <button id="saveCategoryBtn">Save</button>
+        <button id="saveCategoryBtn">Save Category</button>
         <button id="cancelCategoryBtn">Cancel</button>
       </div>
     </div>
