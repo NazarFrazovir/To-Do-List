@@ -13,16 +13,32 @@
   <main>
     <!-- Секція вводу -->
     <section class="todo-input">
+      <!-- Поле для вводу завдання -->
       <input type="text" id="taskInput" placeholder="Add a new task...">
-      <select id="categorySelect">
-        <option value="all" selected>General</option>
-      </select>
+      
+      <!-- Вибір пріоритету -->
+  <select id="prioritySelect">
+    <option value="" disabled selected>Priority</option>
+    <option value="high">High</option>
+    <option value="medium">Medium</option>
+    <option value="low">Low</option>
+  </select>
+      
+      <!-- Вибір категорії -->
+      <!-- Вибір категорії -->
+  <select id="categorySelect">
+    <option value="" disabled selected>Category</option>
+    <option value="all">General</option>
+  </select>
+
+      <!-- Кнопки -->
       <button id="addTaskBtn">Add Task</button>
       <button id="addCategoryBtn">Add Category</button>
     </section>
 
     <!-- Контейнер для секцій завдань -->
     <section id="task-container">
+      <!-- Базова секція "General" -->
       <div class="task-section" data-category="all">
         <div class="section-header">
           <h3>General Tasks</h3>
@@ -45,8 +61,9 @@
   </div>
 
   <footer>
-    <p>© 2024 To-Do App(Frazovir Nazar)</p>
+    <p>© 2024 To-Do App (Frazovir Nazar)</p>
   </footer>
+  
   <script src="script.js"></script>
 </body>
 </html>

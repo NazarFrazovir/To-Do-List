@@ -37,15 +37,16 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  #categorySelect {
+  #prioritySelect, #categorySelect {
     padding: 10px;
     font-size: 16px;
     border: 2px solid #ddd;
     border-radius: 5px;
+    cursor: pointer;
   }
   
   /* Загальний стиль для кнопок */
-button {
+  button {
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
@@ -65,16 +66,9 @@ button {
     transform: translateY(-2px); /* Піднімаємо кнопку */
   }
   
-  /* Стиль для кнопки "Add Task" */
-  #addTaskBtn {
-    margin-left: 10px; /* Невеликий відступ для вирівнювання */
+  #addTaskBtn, #addCategoryBtn {
+    margin-left: 10px;
   }
-  
-  /* Стиль для кнопки "Add Category" */
-  #addCategoryBtn {
-    margin-left: 10px; /* Невеликий відступ для вирівнювання */
-  }
-  
   
   /* Секції завдань */
   .task-section {
@@ -149,8 +143,24 @@ button {
     background-color: #c82333;
   }
   
+  /* Стилі для пріоритетів */
+  .task.high {
+    background-color: #f8d7da; /* Світло-червоний для високого пріоритету */
+    border-left: 5px solid #dc3545;
+  }
+  
+  .task.medium {
+    background-color: #fff3cd; /* Жовтий для середнього пріоритету */
+    border-left: 5px solid #ffc107;
+  }
+  
+  .task.low {
+    background-color: #d4edda; /* Світло-зелений для низького пріоритету */
+    border-left: 5px solid #28a745;
+  }
+  
   /* Модальне вікно */
-.modal {
+  .modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -190,7 +200,6 @@ button {
     }
   }
   
-  /* Заголовок модального вікна */
   .modal-content h2 {
     margin-bottom: 15px;
     font-size: 20px;
@@ -198,9 +207,8 @@ button {
     color: #333;
   }
   
-  /* Поле вводу */
   .modal-content input {
-    width: 50%; 
+    width: 50%;
     padding: 12px 15px; /* Відступи всередині поля */
     font-size: 16px;
     border: 2px solid #6a11cb; /* Стиль рамки */
@@ -216,7 +224,6 @@ button {
     box-shadow: 0 4px 8px rgba(37, 117, 252, 0.2);
   }
   
-  /* Дії модального вікна */
   .modal-actions {
     display: flex;
     justify-content: space-between;
@@ -224,7 +231,7 @@ button {
   }
   
   .modal-actions button {
-    flex: 1; /* Кнопки однакової ширини */
+    flex: 1;
     padding: 12px 15px;
     font-size: 16px;
     font-weight: bold;
@@ -261,4 +268,49 @@ button {
     font-size: 14px;
     box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
   }
+
+
+  /* Загальний стиль для select */
+select {
+    padding: 10px 15px; /* Відступи */
+    border: 2px solid #ddd; /* Сіра рамка */
+    border-radius: 25px; /* Закруглені кути */
+    font-size: 16px; /* Розмір тексту */
+    color: #333; /* Колір тексту */
+    background: linear-gradient(to right, #f9f9f9, #ffffff);
+    outline: none; /* Видаляємо стандартну обводку */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Легка тінь */
+    transition: all 0.3s ease; /* Плавний перехід */
+    appearance: none; /* Прибираємо стандартний вигляд стрілки */
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"%3E%3Cpolyline points="6 9 12 15 18 9"%3E%3C/polyline%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    cursor: pointer;
+  }
+  
+  /* Hover ефект */
+  select:hover {
+    border-color: #2575fc; /* Синя рамка */
+  }
+  
+  /* Focus ефект */
+  select:focus {
+    border-color: #6a11cb; /* Фіолетова рамка */
+    box-shadow: 0 4px 8px rgba(106, 17, 203, 0.3); /* Тінь */
+  }
+  
+  /* Стиль для випадаючого списку, коли обраний елемент */
+  select option {
+    font-size: 16px; /* Розмір тексту */
+    color: #333; /* Колір тексту */
+    background: #f0f0ff; /* Легке підсвічування активного елемента */
+
+  }
+
+  /* Стиль для першого елемента в select */
+select option:first-child {
+    color: #aaa; /* Світлий сірий текст */
+  }
+  
   
